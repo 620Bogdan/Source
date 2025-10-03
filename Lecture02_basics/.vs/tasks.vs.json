@@ -1,0 +1,15 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskLabel": "задача-Lecture02_basics",
+      "appliesTo": "/",
+      "type": "launch"
+    },
+    {
+      "taskLabel": "задача-Lecture02_basics",
+      "appliesTo": "/",
+      "type": "launch"
+    }
+  ]
+}
