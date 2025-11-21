@@ -1,127 +1,154 @@
 #include <iostream>
 using namespace std;
 
-
-
-// Поиск столбцов cодержащие 0:
-int* Zero(int* m, int rows, int cols, int& count) {
-    count = 0;
-    int* result = nullptr;
-
-    for (int j = 0; j < cols; j++) {
-        bool hasZero = false;
-        for (int i = 0; i < rows; i++) {
-            if (m[i * cols + j] == 0) {
-                hasZero = true;
+////////////////////////////////////////////////////
+int* Poiskzero(int** matrica, int column, int line, int* zeros) {
+    int* zeroli = (int*)malloc(line * sizeof(int)); // Запрашиваем память для нулевых столбцов
+    *zeros = 0;// Счетчик найденных столбцов, содержащих нули
+    //Проверка на наличие нулей в матрице
+    for (int j = 0; j < line; j++) {
+        for (int i = 0; i < column; i++) {
+            if (matrica[i][j] == 0) {
+                zeroli[*zeros] = j; // Сохраняем номер столбца
+                (*zeros)++;
                 break;
             }
         }
-        if (hasZero) {
-            // расширяем массив
-            int* tmp = new int[count + 1];
-            for (int k = 0; k < count; k++) tmp[k] = result[k];
-            tmp[count] = j;
-
-            delete[] result;
-            result = tmp;
-            count++;
-        }
     }
-    return result;
+    // Уменьшение матрицы
+    if (*zeros > 0) {
+        zeroli = (int*)realloc(zeroli, (*zeros) * sizeof(int));
+    }
+    // Освобождаем память
+    else {
+        free(zeroli);
+        zeroli = nullptr;
+    }
+    return zeroli;
 }
-
-int main() {
-    int rows = 2, cols = 2;
-
-    // создаем матрицу 2x2
-    int* m = new int[rows * cols];
-
-    cout << "Введите 4 числа для матрицы 2x2:\n";
-    for (int i = 0; i < rows; i++)
-        for (int j = 0; j < cols; j++)
-            cin >> m[i * cols + j];
-
-    int A, B, S, D;
-
-    do {
-        cout << "A (строк добавить): ";
-        cin >> A;
-        if (A < 0) cout << "Ошибка! A >= 0\n";
-    } while (A < 0);
-
-    do {
-        cout << "B (столбцов добавить): ";
-        cin >> B;
-        if (B < 0) cout << "Ошибка! B >= 0\n";
-    } while (B < 0);
-
-    cout << "Введите S и D: ";
-    cin >> S >> D;
-
-    int oldRows = rows;
-    int oldCols = cols;
-
-    // новая матрица
-    int newRows = rows + A;
-    int newCols = cols + B;
-
-    int* newM = new int[newRows * newCols];
-
-    // копируем старые значения
-    for (int i = 0; i < oldRows; i++)
-        for (int j = 0; j < oldCols; j++)
-            newM[i * newCols + j] = m[i * oldCols + j];
-
-    delete[] m;
-
-    // заполняем новые элементы
-    for (int i = 0; i < newRows; i++) {
-        for (int j = 0; j < newCols; j++) {
-            if (i >= oldRows || j >= oldCols)
-                newM[i * newCols + j] = i * S + j * D;
-        }
+//////////////////////////////////////////////////////////
+void NoZero(int**& matrica, int columns, int lines, int* zeroli, int zeros, int& n) {
+    // Если нет нклей, то ничего не делаем
+    if (zeros == 0) {
+        return;
     }
-
-    m = newM;
-    rows = newRows;
-    cols = newCols;
-
-    // ищем столбцы с 0
-    int count = 0;
-    int* zeroCols = Zero(m, rows, cols, count);
-
-    // удаляем столбцы с конца
-    for (int z = count - 1; z >= 0; z--) {
-        int removeCol = zeroCols[z];
-
-        int* nm = new int[rows * (cols - 1)];
-
-        for (int i = 0; i < rows; i++) {
-            int idx = 0;
-            for (int j = 0; j < cols; j++) {
-                if (j == removeCol) continue;
-                nm[i * (cols - 1) + idx] = m[i * cols + j];
-                idx++;
+    // Сдвигаем столбцы после удаления 0
+    n = lines - zeros;
+    for (int i = 0; i < zeros; i++) {
+        int x = zeroli[i] - i;
+        for (int line = x; line < lines - 1; line++) {
+            for (int column = 0; column < columns; column++) {
+                matrica[column][line] = matrica[column][line + 1];
             }
         }
-
-        delete[] m;
-        m = nm;
-        cols--;
+    }
+    // Уменьшаем строки
+    for (int x = 0; x < columns;  x++) {
+        matrica[x] = (int*)realloc(matrica[x], n * sizeof(int));
     }
 
-    delete[] zeroCols;
-
-    // вывод итоговой матрицы
-    cout << "\nИтоговая матрица:\n";
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++)
-            cout << m[i * cols + j] << " ";
-        cout << "\n";
-    }
-
-    delete[] m;
 }
+/////////////////////////////////////////////////////
+int main() {
+    //Создаем матрицу по условию
+    int** matrica = (int**)malloc(2 * sizeof(int*));
+    for (int i = 0; i < 2; i++) {
+        matrica[i] = (int*)malloc(2 * sizeof(int));
+    }
+    ////////////////////////////////////////////////
+    //Вводим элементы матрицы, a и b > 0. Если условие не выполняется, то мы просим повторить ввод еще раз, только на этот раз правильно
+    int a;
+    int b;
+    int c;
+    int d;
+    do {
+        cout << "введите элемент матрицы [0][0]: ";
+        cin >> a;
+        if (a < 0){
+            cout << "Кажется вы ввели отрицательное число, попробуйте заного, только в этот раз введите положительное" <<endl;
+        }
+    } while (a < 0);
+    do {
+        cout << "введите элемент матрицы [0][1]: ";
+        cin >> b;
+        if (b < 0) {
+            cout << "Кажется вы ввели отрицательное число, попробуйте заного, только в этот раз введите положительное" << endl;
+        }
+    } while (b < 0);
+    cout << "введите элемент матрицы [1][0]: ";
+    cin >> c;
+    cout << "введите элемент матрицы [1][1]: ";
+    cin >> d;
+    ///////////////////////////////////////////////
+    // Присваиваем значения матрице
+    matrica[0][0] = a;
+    matrica[0][1] = b;
+    matrica[1][0] = c;
+    matrica[1][1] = d;
+    //////////////////////////////////////////////
+    // Увеличиваем её по в зависимости от  а и b
+    int down = 2 + a;
+    int right = 2 + b;
+/////////////////////////////////////////////////
+    //Увеличиваем строки и столбцы
+    matrica = (int**)realloc(matrica, down * sizeof(int*));
+    for (int i = 0; i < down; i++) {
+        if (i < 2) {
+            matrica[i] = (int*)realloc(matrica[i], right * sizeof(int));
+        }
+        else {
+            matrica[i] = (int*)malloc(right * sizeof(int));
+        }
+    }
+ ////////////////////////////////////////////////////////
+    // Заполнение новых ячеек матрицы
+    for (int i = 0; i < down; i++) {
+        for (int j = 0; j < right; j++) {
+            if (i < 2 && j < 2) {
+                continue;
+            }
+            matrica[i][j] = (i - 1) * c + (j - 1) * d;//Формула из условия, для заполнения новых ячеек
+        }
+    }
+    //////////////////////////////////////////////////////
+    //Показываем матрицу, которую мы вводили в начале
+    cout << "Начальная матрица(до преобразований): " <<endl;
+    for (int i = 0; i < down; i++) {
+        for (int j = 0; j < right; j++) {
+            cout << matrica[i][j] << "  ";
+        }
+        cout << endl;
+    }
+///////////////////////////////////////////////////////////
+    //Поиск нулей в новой матрице, удаление их, если они есть.
+    int zeros;
+    int* zeroli = Poiskzero(matrica, down, right, &zeros);
+    if (zeros > 0) {
+        // Cтолбцы с нулями в конец
+        int n;
+        NoZero(matrica, down, right, zeroli, zeros, n);
+        cout << "Готовая матрица (после удаления нулей): " <<endl;
+        for (int i = 0; i < down; i++) {
+            for (int j = 0; j < n; j++) {
+                cout << matrica[i][j] << "  ";
+            }
+            cout <<endl;
+        }
+    }
+    else {
+        cout << "В матрице нет столбцов с нулями, удалять нечего!!!" <<endl;
+    }
+///////////////////////////////////////////////
+    //Освобождение ненужной памяти.
+    if (zeroli != nullptr) {
+        free(zeroli);
+    }
+    for (int i = 0; i < down; i++){
+        free(matrica[i]);
+    }
+    free(matrica);
+}
+////////////////////////////////////////////
 /*
  // ПУНКТ 2
 int main(){
