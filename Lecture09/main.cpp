@@ -75,9 +75,9 @@ int main() {
 
         else if (check == 2) {
             int A, aM, B, bM;
-            cout << "Сезон A (0-3): "; cin >> A;
+            cout << "Сезон первый (0-3): "; cin >> A;
             cout << "Месяц в сезоне A (1-3): "; cin >> aM;
-            cout << "Сезон B (0-3): "; cin >> B;
+            cout << "Сезон второй (0-3): "; cin >> B;
             cout << "Месяц в сезоне B (1-3): "; cin >> bM;
 
             if (A >= 0 && A < 4 && B >= 0 && B < 4 &&
@@ -91,7 +91,7 @@ int main() {
             }
         }
 
-        else if (check == 010) {
+        else if (check == 1) {
             Year(S);
         }
 
