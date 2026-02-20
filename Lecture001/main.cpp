@@ -114,11 +114,23 @@ public:
     }
 };
 
-int main(){ 
-    Student st("Богдан", "Иванов", "Прикладная математика и информатика", 1, 1, 1); 
-    st.printInfo();  //Информация о студенте
-    st.nextCourse();//Превод на след. курс
-    cout<< endl;
-    st.printInfo(); //Итоговый вывод информации
+int main() {
+
+    cout << "Конструкторы по умолчанию" << endl;
+    Student st1;          // Конструктор по умолчанию
+    st1.printInfo();
+    cout << "\nКонструктор полного заполнения" << endl;
+    Student st2("Богдан", "Иванов", "Прикладная математика и информатика", 1, 1, 1);
+    st2.printInfo();
+    cout << "\nКонструктор копирования " << endl;
+    Student st3(st2);     // Конструктор копирования
+    st3.printInfo();
+    cout << "\nГеттеры" << endl;
+    cout << "Имя: " << st2.getName() << endl;
+    cout << "Фамилия: " << st2.getSurname() << endl;
+    cout << "Курс: " << st2.getCourse() << endl;
+    cout << "\nСледующий курс" << endl;
+    st2.nextCourse();
+    cout << "Новый курс: " << st2.getCourse() << endl;
     return 0;
 }
