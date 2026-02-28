@@ -22,7 +22,7 @@ public:
 
 
     Student operator+(const Student& other);//Оператор +
-    Student operator-=(const Student& other);//Оператор -=
+    Student& operator-=(const Student& other);//Оператор -=
     Student operator/(const Student& other);//Оператор /
 
     string getName();//Геттер имени(ниже также)

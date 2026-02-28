@@ -31,8 +31,43 @@ Student& Student::operator=(const Student& other){// Перегрузка опе
     }
     return *this; //Возращаем результат
 }
+Student Student::operator+(const Student& other){
+    Student result;
+    result.name = name + " и " + other.name;
+    result.surname = surname + " и " + other.surname;
 
-Student Student::operator+(const Student& other){ //___Оператор +___//
+    // Добавляем долги первого
+    for (int i = 0; i < debts.size(); i++){
+        bool found = false;
+
+        for (int j = 0; j < result.debts.size(); j++){
+            if (result.debts[j] == debts[i]){
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+            result.debts.push_back(debts[i]);
+    }
+
+    // Добавляем долги второго без повторов
+    for (int i = 0; i < other.debts.size(); i++){
+        bool found = false;
+
+        for (int j = 0; j < result.debts.size(); j++){
+            if (result.debts[j] == other.debts[i]){
+                found = true;
+                break;
+            }
+        }
+        if (!found)
+            result.debts.push_back(other.debts[i]);
+    }
+    return result;
+}
+
+/*Student Student::operator+(const Student& other) { //___Оператор +___//
     Student result;//Создание нового объекта
     result.name = name + " и " + other.name;  //Имя
     result.surname = surname + " и " + other.surname; //Фам.
@@ -52,9 +87,28 @@ Student Student::operator+(const Student& other){ //___Оператор +___//
     }
 
     return result;//возвращение рез-та
+}*/
+
+Student& Student::operator-=(const Student& other){
+
+    for (int i = 0; i < other.debts.size(); i++){
+
+        for (int j = 0; j < debts.size(); ){
+
+            if (debts[j] == other.debts[i]){
+                debts.erase(debts.begin() + j);
+            }
+            else{
+                j++;
+            }
+        }
+    }
+    name = name + " без " + other.name;
+    surname = surname + " без " + other.surname;
+    return *this;
 }
 
-Student Student::operator-=(const Student& other){   //___Оператор -=___//
+/*Student Student::operator-=(const Student& other) {   //___Оператор -=___//
     Student result = *this; //Копирует объект на данный момент(текущий)
 
     for (int i = 0; i < other.debts.size(); i++){ //Проверка по долгам бездельника
@@ -72,7 +126,7 @@ Student Student::operator-=(const Student& other){   //___Оператор -=___
     result.surname = surname + " без " + other.surname;
 
     return result; // вывод результата
-}
+}*/
 
 Student Student::operator/(const Student& other){  //___Оператор /___//
     Student result;   //Создание нового объекта
