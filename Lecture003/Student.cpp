@@ -71,7 +71,7 @@ void Student::printInfo() {
 
     cout << "Имя : " << name << endl;
     cout << "Фамилия : " << surname << endl;
-    cout << "Direction: " << direction << endl;
+    cout << "Направление: " << direction << endl;
     cout << "Курс : " << course << endl;
     cout << "Группа: " << group << endl;
     cout << "Вариант: " << variant << endl;
