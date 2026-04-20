@@ -1,10 +1,13 @@
 #include "russianperson.h"
 #include "passform.h"
 
+
+
+// Конструктор по умолчанию –  формат даты русский
 RussianPerson::RussianPerson() : Person() {
     setFormat(DateFormat::Russian);
 }
-
+// Конструктор с параметрами – инициализирует поля и устанавливает формат
 RussianPerson::RussianPerson(const QString& lastName_, const QString& firstName_,
                              const QString& patronymic_, const Date& birthDate_) {
     this->lastName_ = lastName_;
@@ -14,7 +17,7 @@ RussianPerson::RussianPerson(const QString& lastName_, const QString& firstName_
 
     setFormat(DateFormat::Russian);
 }
-
+// Формирование полного имени: если отчество пустое или "-" – только фамилия и имя
 QString RussianPerson::getFullName() const {
     if (patronymic_.isEmpty() || patronymic_ == "-")
         return QString("%1 %2").arg(lastName_).arg(firstName_);
@@ -26,7 +29,7 @@ void RussianPerson::craft(QWidget* parent_) {
     form_->setAttribute(Qt::WA_DeleteOnClose);
     form_->show();
 }
-
+// Установка отчества с валидацией
 bool RussianPerson::setPatronymic(const QString& patr_) {
     if (isValidPatronymic(patr_)) {
         patronymic_ = patr_;

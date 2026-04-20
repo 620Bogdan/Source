@@ -3,23 +3,25 @@
 #include <QDir>
 #include <QRandomGenerator>
 
+
+
 PassForm::PassForm(Person* person_, QWidget* parent_)
     : QDialog(parent_), person_(person_) {
-    setupUI();
-    setupImage();
+    setupUI(); // построение интерфейса
+    setupImage(); // загрузка изображения
 
     setWindowTitle("Пропуск");
     setMinimumSize(400, 500);
-    setModal(true);
+    setModal(true); // модальное окно
 }
 
 PassForm::~PassForm() {}
-
+// Создание виджетов и компановка
 void PassForm::setupUI() {
     QVBoxLayout* mainLayout_ = new QVBoxLayout(this);
 
     // Заголовок
-    QLabel* titleLabel_ = new QLabel("ПРОПУСК");
+    QLabel* titleLabel_ = new QLabel("ПРОПУСК РАБОТЯГИ");
     titleLabel_->setAlignment(Qt::AlignCenter);
     QFont titleFont_ = titleLabel_->font();
     titleFont_.setPointSize(16);
@@ -27,7 +29,7 @@ void PassForm::setupUI() {
     titleLabel_->setFont(titleFont_);
     mainLayout_->addWidget(titleLabel_);
 
-    mainLayout_->addWidget(new QLabel("----------------------------------------"));
+    mainLayout_->addWidget(new QLabel("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"));
 
     // Информация о человеке
     nameLabel_ = new QLabel("ФИО: " + person_->getFullName());
@@ -36,13 +38,13 @@ void PassForm::setupUI() {
     nameFont_.setPointSize(12);
     nameLabel_->setFont(nameFont_);
     mainLayout_->addWidget(nameLabel_);
-
+     // Дата рождения
     birthLabel_ = new QLabel("Дата рождения: " + person_->getFormattedBirthDate());
     birthLabel_->setAlignment(Qt::AlignCenter);
     birthLabel_->setFont(nameFont_);
     mainLayout_->addWidget(birthLabel_);
 
-    mainLayout_->addWidget(new QLabel("----------------------------------------"));
+    mainLayout_->addWidget(new QLabel("||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"));
 
     // Изображение
     imageLabel_ = new QLabel();
@@ -68,7 +70,7 @@ void PassForm::setupUI() {
 
     mainLayout_->addLayout(buttonLayout_);
 }
-
+// Загрузка изображения в зависимости от выбранного режима (IMAGE_MODE_)
 void PassForm::setupImage() {
     QPixmap pixmap_;
 
@@ -113,6 +115,7 @@ void PassForm::setupImage() {
 
     case 3: // Уникальная для каждого
     {
+
         QString imageName_ = person_->getFullName().simplified();
         imageName_.replace(" ", "_");
         imageName_.replace(QRegularExpression("[^a-zA-Z0-9_а-яА-Я]"), "");
@@ -143,16 +146,16 @@ void PassForm::setupImage() {
         break;
     }
     }
-
+    // Масштабируем картинку
     if (!pixmap_.isNull()) {
         imageLabel_->setPixmap(pixmap_.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation));
     }
 }
-
+// Слот для кнопки Отмена
 void PassForm::onCancel() {
     close();
 }
-
+// Слот для кнопки Печать
 void PassForm::onPrint() {
     emit personDeleted(person_);
     close();

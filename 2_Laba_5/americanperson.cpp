@@ -1,8 +1,10 @@
 #include "americanperson.h"
 #include "passform.h"
 
+
+
 AmericanPerson::AmericanPerson() : Person() {
-    setFormat(DateFormat::American);
+    setFormat(DateFormat::American); // американский формат даты мм-дд-гггг
 }
 
 AmericanPerson::AmericanPerson(const QString& firstName_, const QString& middleName_,
@@ -17,11 +19,11 @@ AmericanPerson::AmericanPerson(const QString& firstName_, const QString& middleN
         this->middleName_ = "Unknown";
     }
 }
-
+// Полное имя:
 QString AmericanPerson::getFullName() const {
     return QString("%1 %2 %3").arg(firstName_).arg(middleName_).arg(lastName_);
 }
-
+// Создание формы пропуска (аналогично русскому)
 void AmericanPerson::craft(QWidget* parent_) {
     PassForm* form_ = new PassForm(this, parent_);
     form_->setAttribute(Qt::WA_DeleteOnClose);

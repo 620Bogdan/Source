@@ -1,6 +1,5 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
-
 #include <QMainWindow>
 #include <QTableWidget>
 #include <QPushButton>
@@ -12,10 +11,11 @@
 #include <QVector>
 #include <QMessageBox>
 #include <QDebug>
-
 #include "person.h"
 #include "russianperson.h"
 #include "americanperson.h"
+
+
 
 class MainWindow : public QMainWindow {
     Q_OBJECT

@@ -1,27 +1,30 @@
 #ifndef DATE_H
 #define DATE_H
-
 #include <QString>
 #include <QDebug>
 #include <QRegularExpression>
 
-enum class DateFormat {
+
+
+enum class DateFormat { // Перечисление форматов вывода даты
     Russian,   // дд.мм.гггг
     American   // мм-дд-гггг
 };
 
-struct Date {
+struct Date {  // хранение даты рождения
 private:
     int day_;
     int month_;
     int year_;
 
-    bool isValidDate(int d, int m, int y) const {
+    bool isValidDate(int d, int m, int y) const { // Метод проверки корректности даты
         return isValidDateStatic(d, m, y);
     }
 
 public:
+     // Конструктор по умолчанию – 1.1.2000
     Date() : day_(1), month_(1), year_(2000) {}
+      // Конструктор с параметрами
     Date(int d, int m, int y) {
         if (isValidDate(d, m, y)) {
             day_ = d;
@@ -35,6 +38,7 @@ public:
         }
     }
 
+    // проверка корректности даты (диапазоны и високосный год)
     static bool isValidDateStatic(int d, int m, int y) {
         if (y < 1900 || y > 2026) return false;
         if (m < 1 || m > 12) return false;
@@ -54,6 +58,7 @@ public:
         return (y % 4 == 0 && y % 100 != 0) || (y % 400 == 0);
     }
 
+    // Проверка строки даты на соответствие формату
     static bool validateDateString(const QString& str, DateFormat format) {
         QRegularExpression re;
 
@@ -83,6 +88,7 @@ public:
         return isValidDateStatic(day, month, year);
     }
 
+    // Преобразование даты в строку,  согласно переданному формату
     QString toString(DateFormat format) const {
         if (format == DateFormat::Russian) {
             // дд.мм.гггг

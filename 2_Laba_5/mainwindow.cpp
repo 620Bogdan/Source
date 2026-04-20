@@ -5,6 +5,8 @@
 #include <QHeaderView>
 #include <QDebug>
 
+
+
 // Функция для показа ошибок
 static void showFormatError(QWidget* parent, const QString& fieldName, const QString& expectedFormat, int lineNumber) {
     QMessageBox::warning(parent, "Ошибка формата",
