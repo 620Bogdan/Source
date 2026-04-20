@@ -21,24 +21,24 @@ class MainWindow : public QMainWindow {
     Q_OBJECT
 
 private:
-    QTableWidget* table_;
-    QPushButton* loadButton_;
-    QVector<Person*> persons_;
+    QTableWidget* table_; // Слот для кнопки "Печать"
+    QPushButton* loadButton_; // кнопка "Загрузить"
+    QVector<Person*> persons_;  // вектор указателей на всех загруженных людей
 
 public:
     MainWindow(QWidget* parent_ = nullptr);
     ~MainWindow();
 
 private slots:
-    void onLoadButtonClicked();
-    void onTableDoubleClicked(const QModelIndex& index_);
-    void onPersonDeleted(Person* person_);
+    void onLoadButtonClicked(); //Нажатие на кнопку загрузки
+    void onTableDoubleClicked(const QModelIndex& index_); // двойной клик по строке таблицы
+    void onPersonDeleted(Person* person_); // удаление человека после "печати"
 
 private:
-    void setupUI();
-    void loadFromFile(const QString& filename_);
-    void updateTable();
-    void clearData();
+    void setupUI(); // создание интерфейса
+    void loadFromFile(const QString& filename_); // чтение файла и создание объектов
+    void updateTable();  // обновление содержимого таблицы
+    void clearData(); // очистка вектора и таблицы
 
     //Методы для получения частей имени
     QString getLastNameFromPerson(Person* person_) const;

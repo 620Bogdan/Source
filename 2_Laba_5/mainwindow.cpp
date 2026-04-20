@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget* parent_) : QMainWindow(parent_) {
 }
 
 MainWindow::~MainWindow() {
-    clearData();
+    clearData(); // освобождаем память перед закрытием
 }
 
 void MainWindow::setupUI() {
@@ -30,18 +30,18 @@ void MainWindow::setupUI() {
     setCentralWidget(centralWidget_);
 
     QVBoxLayout* mainLayout_ = new QVBoxLayout(centralWidget_);
-
+    // Кнопка загрузки
     loadButton_ = new QPushButton("Загрузить");
     connect(loadButton_, &QPushButton::clicked, this, &MainWindow::onLoadButtonClicked);
     mainLayout_->addWidget(loadButton_);
 
     table_ = new QTableWidget();
-    // 4 столбца: Фамилия, Имя, Отчество/Middle name, Дата рождения
+    // Таблица: 4 столбца :
     table_->setColumnCount(4);
     table_->setHorizontalHeaderLabels(QStringList() << "Фамилия" << "Имя" << "Отчество/Middle name" << "Дата рождения");
     table_->setSelectionBehavior(QAbstractItemView::SelectRows);
     table_->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
+    //Фиксированная ширина столбцов
     table_->horizontalHeader()->setSectionResizeMode(0, QHeaderView::Fixed);  // Фамилия
     table_->horizontalHeader()->setSectionResizeMode(1, QHeaderView::Fixed);  // Имя
     table_->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Fixed);  // Отчество/Middle name
@@ -51,14 +51,14 @@ void MainWindow::setupUI() {
     table_->setColumnWidth(1, 200);  // Имя
     table_->setColumnWidth(2, 220);  // Отчество/Middle name
     table_->setColumnWidth(3, 120);  // Дата рождения
-
+    //Двойной клик
     connect(table_, &QTableWidget::doubleClicked, this, &MainWindow::onTableDoubleClicked);
     mainLayout_->addWidget(table_);
 
     setWindowTitle("Список сотрудников");
     resize(800, 450);
 }
-
+// Извлечение фамилии из объекта Person в зависимости от типа
 QString MainWindow::getLastNameFromPerson(Person* person_) const {
     RussianPerson* russian = dynamic_cast<RussianPerson*>(person_);
     if (russian) {
@@ -74,7 +74,7 @@ QString MainWindow::getLastNameFromPerson(Person* person_) const {
 
     return "";
 }
-
+// Извлечение имени
 QString MainWindow::getFirstNameFromPerson(Person* person_) const {
     RussianPerson* russian = dynamic_cast<RussianPerson*>(person_);
     if (russian) {
@@ -90,7 +90,7 @@ QString MainWindow::getFirstNameFromPerson(Person* person_) const {
 
     return "";
 }
-
+// Извлечение отчества (для русских) или второго имени (для американцев)
 QString MainWindow::getMiddleOrPatronymicFromPerson(Person* person_) const {
     RussianPerson* russian = dynamic_cast<RussianPerson*>(person_);
     if (russian) {
@@ -106,7 +106,7 @@ QString MainWindow::getMiddleOrPatronymicFromPerson(Person* person_) const {
 
     return "";
 }
-
+//Слот для кнопки загрузить
 void MainWindow::onLoadButtonClicked() {
     QString filename_ = QFileDialog::getOpenFileName(this, "Выберите файл с данными", "", "Текстовые файлы (*.txt);;Все файлы (*)");
     if (!filename_.isEmpty()) {
@@ -121,7 +121,7 @@ void MainWindow::loadFromFile(const QString& filename_) {
         return;
     }
 
-    clearData();
+    clearData(); // очищаем предыдущие данные
 
     QTextStream in_(&file_);
     int lineNumber_ = 0;
@@ -145,7 +145,7 @@ void MainWindow::loadFromFile(const QString& filename_) {
         }
 
         int code_ = parts_[0].toInt();
-        //Русский
+        //   Русский
         if (code_ == 1) {
             QString lastName_ = parts_[1].trimmed();
             QString firstName_ = parts_[2].trimmed();
@@ -191,14 +191,14 @@ void MainWindow::loadFromFile(const QString& filename_) {
                 errorCount_++;
                 continue;
             }
-
+            // Создаём объект и добавляем в вектор
             RussianPerson* person_ = new RussianPerson(lastName_, firstName_, patronymic_, birthDate_);
             persons_.append(person_);
 
             qDebug() << "Загружен русский:" << person_->getFullName()
                      << birthDate_.toString(DateFormat::Russian);
         }
-        //Амереканец
+        //   Амереканец
         else if (code_ == 2) {
             QString firstName_ = parts_[1].trimmed();
             QString middleName_ = parts_[2].trimmed();
@@ -280,21 +280,19 @@ void MainWindow::loadFromFile(const QString& filename_) {
 
 void MainWindow::updateTable() {
     table_->setRowCount(persons_.size());
-
     for (int i_ = 0; i_ < persons_.size(); ++i_) {
         Person* person_ = persons_[i_];
 
-        // Столбец 0: Фамилия
+        // Столбцы 0,1,2 – фамилия, имя, отчество/middle name
         QTableWidgetItem* lastNameItem_ = new QTableWidgetItem(getLastNameFromPerson(person_));
-
-        // Столбец 1: Имя
         QTableWidgetItem* firstNameItem_ = new QTableWidgetItem(getFirstNameFromPerson(person_));
-
-        // Столбец 2: Отчество/Middle name
         QTableWidgetItem* middleItem_ = new QTableWidgetItem(getMiddleOrPatronymicFromPerson(person_));
 
-        // Столбец 3: Дата рождения
-        QTableWidgetItem* dateItem_ = new QTableWidgetItem(person_->getFormattedBirthDate());
+        // Столбец 3 – дата рождения ВСЕГДА в русском формате дд.мм.гггг
+        // (в соответствии с требованием задания)
+        QTableWidgetItem* dateItem_ = new QTableWidgetItem(
+            person_->getBirthDate().toString(DateFormat::Russian)
+            );
 
         table_->setItem(i_, 0, lastNameItem_);
         table_->setItem(i_, 1, firstNameItem_);
@@ -302,7 +300,7 @@ void MainWindow::updateTable() {
         table_->setItem(i_, 3, dateItem_);
     }
 }
-
+// Обработка двойного клика по строке таблицы
 void MainWindow::onTableDoubleClicked(const QModelIndex& index_) {
     if (!index_.isValid()) return;
 
@@ -313,19 +311,19 @@ void MainWindow::onTableDoubleClicked(const QModelIndex& index_) {
         form_->show();
     }
 }
-
+// Слот удаления человека после печати
 void MainWindow::onPersonDeleted(Person* person_) {
     int index_ = persons_.indexOf(person_);
     if (index_ != -1) {
-        delete persons_[index_];
-        persons_.remove(index_);
-        updateTable();
+        delete persons_[index_]; // освобождаем память
+        persons_.remove(index_); // удаляем указатель из вектора
+        updateTable();  // обновляем таблицу
         QMessageBox::information(this, "Успех", "Пропуск распечатан");
     }
 }
-
+// Очистка всех данных (удаление объектов и очистка таблицы)
 void MainWindow::clearData() {
-    qDeleteAll(persons_);
+    qDeleteAll(persons_); // удаляет все объекты по указателям
     persons_.clear();
 
     if (table_) {

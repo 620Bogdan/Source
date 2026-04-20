@@ -41,9 +41,10 @@ public:
     virtual QString getFormattedBirthDate() const { // Получение отформатированной даты рождения
         return birthDate_.toString(format_);
     }
+
     // Установка даты рождения
     void setBirthDate(const Date& date_) { birthDate_ = date_; }
-
+    Date getBirthDate() const { return birthDate_; }
       // Установка имени с проверкой
     bool setFirstName(const QString& name_) {
         if (isValidName(name_)) {
