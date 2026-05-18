@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dizel\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\Source\\stroki2\\stroki2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{45ED865D-415D-4B9B-B8B1-DC160B35F8BD}|stroki2\\stroki2.vcxproj|C:\\Users\\dizel\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\Source\\stroki2\\stroki2\\stroki2\\stroki2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{45ED865D-415D-4B9B-B8B1-DC160B35F8BD}|stroki2\\stroki2.vcxproj|solutionrelative:stroki2\\stroki2.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "stroki2.cpp",
+              "DocumentMoniker": "C:\\Users\\dizel\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\Source\\stroki2\\stroki2\\stroki2\\stroki2.cpp",
+              "RelativeDocumentMoniker": "stroki2\\stroki2.cpp",
+              "ToolTip": "C:\\Users\\dizel\\OneDrive\\\u0414\u043E\u043A\u0443\u043C\u0435\u043D\u0442\u044B\\Source\\stroki2\\stroki2\\stroki2\\stroki2.cpp",
+              "RelativeToolTip": "stroki2\\stroki2.cpp",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAYwGIBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-05-17T20:25:24.726Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{cce594b6-0c39-4442-ba28-10c64ac7e89f}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
